@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Life: Simulation & Financial Literacy</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background: #f0f4f8; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+    .game-card { background: white; width: 100%; max-width: 600px; border-radius: 16px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+    h1 { font-size: 1.5rem; text-align: center; color: #1e293b; margin-bottom: 20px; }
+    
+    .metrics { display: flex; justify-content: space-between; background: #e2e8f0; padding: 14px 18px; border-radius: 12px; margin-bottom: 20px; }
+    .stat { text-align: center; }
+    .stat-label { font-size: 0.8rem; text-transform: uppercase; color: #64748b; font-weight: 600; }
+    .stat-value { font-size: 1.2rem; font-weight: bold; color: #0f172a; margin-top: 4px; }
+    
+    .budget-tracker { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; }
+    .budget-title { font-size: 0.85rem; font-weight: bold; color: #475569; display: flex; justify-content: space-between; }
+    .progress-bar-container { background: #e2e8f0; border-radius: 8px; height: 10px; width: 100%; margin-top: 8px; overflow: hidden; }
+    .progress-bar { background: #10b981; height: 100%; width: 100%; transition: width 0.3s ease, background 0.3s ease; }
+    
+    .scenario-box { background: #f1f5f9; border-left: 4px solid #3b82f6; padding: 16px; border-radius: 8px; margin-bottom: 20px; }
+    .scenario-text { font-size: 1.05rem; line-height: 1.5; color: #1e293b; }
+    
+    .options-grid { display: flex; flex-direction: column; gap: 10px; }
+    .btn { background: white; border: 1.5px solid #cbd5e1; padding: 12px 16px; border-radius: 8px; cursor: pointer; text-align: left; font-size: 0.95rem; font-weight: 500; transition: all 0.2s ease; }
+    .btn:hover { border-color: #3b82f6; background: #eff6ff; }
+    
+    .feedback { text-align: center; font-size: 0.95rem; color: #64748b; margin-top: 15px; }
+  </style>
+</head>
+<body>
+
+  <div class="game-card">
+    <h1>🎓 Campus Life: Financial Decision Simulator</h1>
+
+    <div class="metrics">
+      <div class="stat">
+        <div class="stat-label">Health</div>
+        <div class="stat-value" id="health-val">80%</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">GPA</div>
+        <div class="stat-value" id="gpa-val">3.5</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Wallet</div>
+        <div class="stat-value" id="wallet-val">₹5,000</div>
+      </div>
+    </div>
+
+    <div class="budget-tracker">
+      <div class="budget-title">
+        <span>Monthly Budget Safety</span>
+        <span id="budget-status">Healthy</span>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="budget-progress"></div>
+      </div>
+    </div>
+
+    <div class="scenario-box">
+      <p class="scenario-text" id="scenario-desc">Loading daily campus scenario...</p>
+    </div>
+
+    <div class="options-grid" id="options-container"></div>
+    <div class="feedback" id="feedback-msg">Make deliberate choices to balance your campus life and wallet!</div>
+  </div>
+
+  <script>
+    let health = 80;
+    let gpa = 3.5;
+    let wallet = 5000;
+    const initialWallet = 5000;
+    let currentStep = 0;
+
+    const scenarios = [
+      {
+        text: "It's Friday evening! Exams are 10 days away. Your friends are going out for a fancy cafe dinner.",
+        choices: [
+          { text: "Join them for the lavish dinner (-₹800, +10% Health)", dH: 10, dG: 0, dW: -800 },
+          { text: "Eat at campus hostel mess & study 1 hour (-₹0, +0.1 GPA)", dH: -5, dG: 0.1, dW: 0 },
+          { text: "Order cheap snacks & study with friends (-₹250, +0.05 GPA, +5% Health)", dH: 5, dG: 0.05, dW: -250 }
+        ]
+      },
+      {
+        text: "You need study notes for a critical mid-term exam tomorrow.",
+        choices: [
+          { text: "Buy premium reference summary notes online (-₹600, +0.2 GPA)", dH: 0, dG: 0.2, dW: -600 },
+          { text: "Spend night in library compiling notes from scratch (-15% Health, +0.2 GPA)", dH: -15, dG: 0.2, dW: 0 },
+          { text: "Form a study circle with peers and split topics (-₹100 for chai, +0.15 GPA)", dH: 0, dG: 0.15, dW: -100 }
+        ]
+      },
+      {
+        text: "Campus tech club announced an entry-level Cloud & AI Certification workshop with a student discount fee.",
+        choices: [
+          { text: "Invest in the workshop (-₹1,200, +0.2 GPA)", dH: 0, dG: 0.2, dW: -1200 },
+          { text: "Self-learn using free documentation online (0 expense, +0.1 GPA, -5% Health)", dH: -5, dG: 0.1, dW: 0 },
+          { text: "Skip it and relax with roommates (+10% Health, -₹300 snacks)", dH: 10, dG: -0.05, dW: -300 }
+        ]
+      }
+    ];
+
+    function updateUI() {
+      document.getElementById('health-val').textContent = health + '%';
+      document.getElementById('gpa-val').textContent = gpa.toFixed(2);
+      document.getElementById('wallet-val').textContent = '₹' + wallet;
+
+      const pct = Math.max(0, Math.min(100, (wallet / initialWallet) * 100));
+      const pBar = document.getElementById('budget-progress');
+      pBar.style.width = pct + '%';
+
+      const statusEl = document.getElementById('budget-status');
+      if (pct > 60) {
+        pBar.style.background = '#10b981';
+        statusEl.textContent = 'Healthy';
+        statusEl.style.color = '#059669';
+      } else if (pct > 30) {
+        pBar.style.background = '#f59e0b';
+        statusEl.textContent = 'Moderate Spending';
+        statusEl.style.color = '#d97706';
+      } else {
+        pBar.style.background = '#ef4444';
+        statusEl.textContent = 'Budget Alert!';
+        statusEl.style.color = '#dc2626';
+      }
+    }
+
+    function renderScenario() {
+      if (currentStep >= scenarios.length) {
+        document.getElementById('scenario-desc').textContent = "🎉 Semester Completed! You successfully balanced your academics, lifestyle, and student finances.";
+        document.getElementById('options-container').innerHTML = `
+          <button class="btn" style="text-align:center; font-weight:bold; background:#3b82f6; color:white;" onclick="resetGame()">Play Again</button>
+        `;
+        document.getElementById('feedback-msg').textContent = "Final Balance: ₹" + wallet + " | GPA: " + gpa.toFixed(2);
+        return;
+      }
+
+      const current = scenarios[currentStep];
+      document.getElementById('scenario-desc').textContent = current.text;
+      const optsContainer = document.getElementById('options-container');
+      optsContainer.innerHTML = '';
+
+      current.choices.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.textContent = c.text;
+        btn.onclick = () => {
+          health = Math.max(0, Math.min(100, health + c.dH));
+          gpa = Math.max(0, Math.min(4.0, gpa + c.dG));
+          wallet = Math.max(0, wallet + c.dW);
+          currentStep++;
+          updateUI();
+          renderScenario();
+        };
+        optsContainer.appendChild(btn);
+      });
+    }
+
+    function resetGame() {
+      health = 80;
+      gpa = 3.5;
+      wallet = 5000;
+      currentStep = 0;
+      updateUI();
+      renderScenario();
+    }
+
+    updateUI();
+    renderScenario();
+  </script>
+</body>
+</html>
