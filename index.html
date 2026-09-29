@@ -28,6 +28,13 @@
     .btn:hover { border-color: #3b82f6; background: #eff6ff; }
     
     .feedback { text-align: center; font-size: 0.95rem; color: #64748b; margin-top: 15px; }
+
+    /* Chef Challenge Specific Styles */
+    .chef-box { display: none; background: #fffbeb; border: 2px dashed #f59e0b; padding: 16px; border-radius: 8px; margin-bottom: 20px; text-align: center; }
+    .chef-title { font-size: 1.1rem; font-weight: bold; color: #d97706; margin-bottom: 10px; }
+    .chef-btn { background: #f59e0b; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin: 5px; }
+    .chef-btn:hover { background: #d97706; }
+    #minigame-result { margin-top: 10px; font-weight: bold; color: #1e293b; }
   </style>
 </head>
 <body>
@@ -60,6 +67,15 @@
       </div>
     </div>
 
+    <!-- Chef Challenge Feature -->
+    <div class="chef-box" id="chef-challenge-box">
+      <div class="chef-title">👨‍🍳 Pop-Up Event: Hostel MasterChef Challenge!</div>
+      <p>Cook a budget meal to win a cash prize, but risk burning your food and losing health!</p>
+      <button class="chef-btn" onclick="playChefMinigame()">Start Cooking!</button>
+      <button class="chef-btn" style="background:#64748b;" onclick="skipChefMinigame()">Skip</button>
+      <div id="minigame-result"></div>
+    </div>
+
     <div class="scenario-box">
       <p class="scenario-text" id="scenario-desc">Loading daily campus scenario...</p>
     </div>
@@ -74,6 +90,7 @@
     let wallet = 5000;
     const initialWallet = 5000;
     let currentStep = 0;
+    let chefEventTriggered = false; // Ensures it only happens once
 
     const scenarios = [
       {
@@ -128,6 +145,13 @@
     }
 
     function renderScenario() {
+      // Trigger Chef Event randomly after step 1, only once
+      if (currentStep === 1 && !chefEventTriggered) {
+          document.getElementById('chef-challenge-box').style.display = 'block';
+          document.getElementById('options-container').style.display = 'none'; // hide options temporarily
+          return;
+      }
+
       if (currentStep >= scenarios.length) {
         document.getElementById('scenario-desc').textContent = "🎉 Semester Completed! You successfully balanced your academics, lifestyle, and student finances.";
         document.getElementById('options-container').innerHTML = `
@@ -158,11 +182,47 @@
       });
     }
 
+    function playChefMinigame() {
+        const success = Math.random() > 0.5; // 50% chance of winning
+        const resDiv = document.getElementById('minigame-result');
+        if(success) {
+            wallet += 500;
+            health += 10;
+            resDiv.innerHTML = "🌟 Delicious! You won ₹500 and feel great (+10% Health)!";
+            resDiv.style.color = "#10b981";
+        } else {
+            health -= 15;
+            resDiv.innerHTML = "🔥 Oh no! You burnt the food. (-15% Health)";
+            resDiv.style.color = "#dc2626";
+        }
+        updateUI();
+        finishChefMinigame();
+    }
+
+    function skipChefMinigame() {
+        document.getElementById('minigame-result').innerHTML = "You skipped the challenge.";
+        document.getElementById('minigame-result').style.color = "#64748b";
+        finishChefMinigame();
+    }
+
+    function finishChefMinigame() {
+        chefEventTriggered = true;
+        setTimeout(() => {
+            document.getElementById('chef-challenge-box').style.display = 'none';
+            document.getElementById('options-container').style.display = 'flex';
+            renderScenario(); // continue normal game
+        }, 2000);
+    }
+
     function resetGame() {
       health = 80;
       gpa = 3.5;
       wallet = 5000;
       currentStep = 0;
+      chefEventTriggered = false;
+      document.getElementById('chef-challenge-box').style.display = 'none';
+      document.getElementById('options-container').style.display = 'flex';
+      document.getElementById('minigame-result').innerHTML = '';
       updateUI();
       renderScenario();
     }
