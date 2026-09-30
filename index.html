@@ -3,44 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Campus Life: Simulation & Financial Literacy</title>
+  <title>Campus Life: Survival & MasterChef</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background: #f0f4f8; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+    body { background: #f0f4f8; color: #1e293b; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
     .game-card { background: white; width: 100%; max-width: 600px; border-radius: 16px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
-    h1 { font-size: 1.5rem; text-align: center; color: #1e293b; margin-bottom: 20px; }
+    h1 { font-size: 1.4rem; text-align: center; color: #0f172a; margin-bottom: 18px; }
     
-    .metrics { display: flex; justify-content: space-between; background: #e2e8f0; padding: 14px 18px; border-radius: 12px; margin-bottom: 20px; }
+    .metrics { display: flex; justify-content: space-between; background: #e2e8f0; padding: 12px 18px; border-radius: 12px; margin-bottom: 16px; }
     .stat { text-align: center; }
-    .stat-label { font-size: 0.8rem; text-transform: uppercase; color: #64748b; font-weight: 600; }
-    .stat-value { font-size: 1.2rem; font-weight: bold; color: #0f172a; margin-top: 4px; }
+    .stat-label { font-size: 0.75rem; text-transform: uppercase; color: #64748b; font-weight: 700; letter-spacing: 0.5px; }
+    .stat-value { font-size: 1.2rem; font-weight: 800; color: #0f172a; margin-top: 2px; }
     
-    .budget-tracker { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; }
-    .budget-title { font-size: 0.85rem; font-weight: bold; color: #475569; display: flex; justify-content: space-between; }
+    .budget-tracker { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 16px; margin-bottom: 18px; }
+    .budget-title { font-size: 0.85rem; font-weight: 600; color: #475569; display: flex; justify-content: space-between; }
     .progress-bar-container { background: #e2e8f0; border-radius: 8px; height: 10px; width: 100%; margin-top: 8px; overflow: hidden; }
     .progress-bar { background: #10b981; height: 100%; width: 100%; transition: width 0.3s ease, background 0.3s ease; }
     
-    .scenario-box { background: #f1f5f9; border-left: 4px solid #3b82f6; padding: 16px; border-radius: 8px; margin-bottom: 20px; }
-    .scenario-text { font-size: 1.05rem; line-height: 1.5; color: #1e293b; }
+    .content-box { background: #f8fafc; border-left: 4px solid #3b82f6; padding: 16px; border-radius: 8px; margin-bottom: 18px; line-height: 1.5; font-size: 1rem; }
+    .highlight-badge { display: inline-block; background: #fef3c7; color: #b45309; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; margin-bottom: 8px; }
     
     .options-grid { display: flex; flex-direction: column; gap: 10px; }
-    .btn { background: white; border: 1.5px solid #cbd5e1; padding: 12px 16px; border-radius: 8px; cursor: pointer; text-align: left; font-size: 0.95rem; font-weight: 500; transition: all 0.2s ease; }
+    .btn { background: white; border: 1.5px solid #cbd5e1; padding: 12px 14px; border-radius: 8px; cursor: pointer; text-align: left; font-size: 0.95rem; font-weight: 500; transition: all 0.2s; color: #1e293b; }
     .btn:hover { border-color: #3b82f6; background: #eff6ff; }
-    
-    .feedback { text-align: center; font-size: 0.95rem; color: #64748b; margin-top: 15px; }
+    .action-btn { background: #3b82f6; color: white; border: none; font-weight: bold; text-align: center; }
+    .action-btn:hover { background: #2563eb; }
 
-    /* Chef Challenge Specific Styles */
-    .chef-box { display: none; background: #fffbeb; border: 2px dashed #f59e0b; padding: 16px; border-radius: 8px; margin-bottom: 20px; text-align: center; }
-    .chef-title { font-size: 1.1rem; font-weight: bold; color: #d97706; margin-bottom: 10px; }
-    .chef-btn { background: #f59e0b; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin: 5px; }
-    .chef-btn:hover { background: #d97706; }
-    #minigame-result { margin-top: 10px; font-weight: bold; color: #1e293b; }
+    .rival-card { background: white; border: 1px solid #e2e8f0; padding: 10px; border-radius: 8px; margin: 8px 0; font-size: 0.9rem; }
   </style>
 </head>
 <body>
 
   <div class="game-card">
-    <h1>🎓 Campus Life: Financial Decision Simulator</h1>
+    <h1>🎓 Campus Life: Survival & MasterChef</h1>
 
     <div class="metrics">
       <div class="stat">
@@ -49,7 +44,7 @@
       </div>
       <div class="stat">
         <div class="stat-label">GPA</div>
-        <div class="stat-value" id="gpa-val">3.5</div>
+        <div class="stat-value" id="gpa-val">3.50</div>
       </div>
       <div class="stat">
         <div class="stat-label">Wallet</div>
@@ -67,21 +62,13 @@
       </div>
     </div>
 
-    <!-- Chef Challenge Feature -->
-    <div class="chef-box" id="chef-challenge-box">
-      <div class="chef-title">👨‍🍳 Pop-Up Event: Hostel MasterChef Challenge!</div>
-      <p>Cook a budget meal to win a cash prize, but risk burning your food and losing health!</p>
-      <button class="chef-btn" onclick="playChefMinigame()">Start Cooking!</button>
-      <button class="chef-btn" style="background:#64748b;" onclick="skipChefMinigame()">Skip</button>
-      <div id="minigame-result"></div>
+    <div class="content-box" id="main-content">
+      <!-- Dynamic Story Screen -->
     </div>
 
-    <div class="scenario-box">
-      <p class="scenario-text" id="scenario-desc">Loading daily campus scenario...</p>
+    <div class="options-grid" id="options-container">
+      <!-- Dynamic Buttons -->
     </div>
-
-    <div class="options-grid" id="options-container"></div>
-    <div class="feedback" id="feedback-msg">Make deliberate choices to balance your campus life and wallet!</div>
   </div>
 
   <script>
@@ -89,35 +76,7 @@
     let gpa = 3.5;
     let wallet = 5000;
     const initialWallet = 5000;
-    let currentStep = 0;
-    let chefEventTriggered = false; // Ensures it only happens once
-
-    const scenarios = [
-      {
-        text: "It's Friday evening! Exams are 10 days away. Your friends are going out for a fancy cafe dinner.",
-        choices: [
-          { text: "Join them for the lavish dinner (-₹800, +10% Health)", dH: 10, dG: 0, dW: -800 },
-          { text: "Eat at campus hostel mess & study 1 hour (-₹0, +0.1 GPA)", dH: -5, dG: 0.1, dW: 0 },
-          { text: "Order cheap snacks & study with friends (-₹250, +0.05 GPA, +5% Health)", dH: 5, dG: 0.05, dW: -250 }
-        ]
-      },
-      {
-        text: "You need study notes for a critical mid-term exam tomorrow.",
-        choices: [
-          { text: "Buy premium reference summary notes online (-₹600, +0.2 GPA)", dH: 0, dG: 0.2, dW: -600 },
-          { text: "Spend night in library compiling notes from scratch (-15% Health, +0.2 GPA)", dH: -15, dG: 0.2, dW: 0 },
-          { text: "Form a study circle with peers and split topics (-₹100 for chai, +0.15 GPA)", dH: 0, dG: 0.15, dW: -100 }
-        ]
-      },
-      {
-        text: "Campus tech club announced an entry-level Cloud & AI Certification workshop with a student discount fee.",
-        choices: [
-          { text: "Invest in the workshop (-₹1,200, +0.2 GPA)", dH: 0, dG: 0.2, dW: -1200 },
-          { text: "Self-learn using free documentation online (0 expense, +0.1 GPA, -5% Health)", dH: -5, dG: 0.1, dW: 0 },
-          { text: "Skip it and relax with roommates (+10% Health, -₹300 snacks)", dH: 10, dG: -0.05, dW: -300 }
-        ]
-      }
-    ];
+    let gameState = "scenario_1";
 
     function updateUI() {
       document.getElementById('health-val').textContent = health + '%';
@@ -133,103 +92,167 @@
         pBar.style.background = '#10b981';
         statusEl.textContent = 'Healthy';
         statusEl.style.color = '#059669';
-      } else if (pct > 30) {
+      } else if (pct > 25) {
         pBar.style.background = '#f59e0b';
-        statusEl.textContent = 'Moderate Spending';
+        statusEl.textContent = 'Budget Squeezed!';
         statusEl.style.color = '#d97706';
       } else {
         pBar.style.background = '#ef4444';
-        statusEl.textContent = 'Budget Alert!';
+        statusEl.textContent = 'Bankruptcy Danger!';
         statusEl.style.color = '#dc2626';
       }
     }
 
-    function renderScenario() {
-      // Trigger Chef Event randomly after step 1, only once
-      if (currentStep === 1 && !chefEventTriggered) {
-          document.getElementById('chef-challenge-box').style.display = 'block';
-          document.getElementById('options-container').style.display = 'none'; // hide options temporarily
-          return;
-      }
+    function renderScreen() {
+      const box = document.getElementById('main-content');
+      const opts = document.getElementById('options-container');
+      opts.innerHTML = '';
 
-      if (currentStep >= scenarios.length) {
-        document.getElementById('scenario-desc').textContent = "🎉 Semester Completed! You successfully balanced your academics, lifestyle, and student finances.";
-        document.getElementById('options-container').innerHTML = `
-          <button class="btn" style="text-align:center; font-weight:bold; background:#3b82f6; color:white;" onclick="resetGame()">Play Again</button>
-        `;
-        document.getElementById('feedback-msg').textContent = "Final Balance: ₹" + wallet + " | GPA: " + gpa.toFixed(2);
+      if (wallet <= 0) {
+        box.innerHTML = `<span class="highlight-badge" style="background:#fee2e2; color:#b91c1c;">GAME OVER: BANKRUPT</span>
+        <p>Aapka wallet bilkul khali ho gaya (₹0)! Udhaar lene ki naubat aa gayi aur campus survival khatam ho gaya.</p>`;
+        opts.innerHTML = `<button class="btn action-btn" onclick="restart()">Try Again</button>`;
+        return;
+      }
+      if (health <= 20) {
+        box.innerHTML = `<span class="highlight-badge" style="background:#fee2e2; color:#b91c1c;">HOSPITALIZED</span>
+        <p>Extreme burnout aur laparwahi se health 20% se neeche gir gayi. Semester drop karna pada!</p>`;
+        opts.innerHTML = `<button class="btn action-btn" onclick="restart()">Try Again</button>`;
         return;
       }
 
-      const current = scenarios[currentStep];
-      document.getElementById('scenario-desc').textContent = current.text;
-      const optsContainer = document.getElementById('options-container');
-      optsContainer.innerHTML = '';
+      switch(gameState) {
+        case "scenario_1":
+          box.innerHTML = `<strong>Friday Night Dilemma:</strong> Exams 10 din door hain, par dosto ka group expensive cafe dinner ke liye insist kar raha hai.`;
+          opts.innerHTML = `
+            <button class="btn" onclick="applyChoice(-1500, 5, 0, 'chef_intro')">Expensive Cafe Dinner & Partying (-₹1,500, +5% Health)</button>
+            <button class="btn" onclick="applyChoice(-200, 5, 0.05, 'chef_intro')">Campus Canteen Chai-Samosa & Group Study (-₹200, +5% Health, +0.05 GPA)</button>
+            <button class="btn" onclick="applyChoice(0, -5, 0.1, 'chef_intro')">Hostel Mess Dinner & 2 Hours Focus Study (₹0, -5% Health, +0.1 GPA)</button>
+          `;
+          break;
 
-      current.choices.forEach(c => {
-        const btn = document.createElement('button');
-        btn.className = 'btn';
-        btn.textContent = c.text;
-        btn.onclick = () => {
-          health = Math.max(0, Math.min(100, health + c.dH));
-          gpa = Math.max(0, Math.min(4.0, gpa + c.dG));
-          wallet = Math.max(0, wallet + c.dW);
-          currentStep++;
-          updateUI();
-          renderScenario();
-        };
-        optsContainer.appendChild(btn);
-      });
+        case "chef_intro":
+          box.innerHTML = `
+            <span class="highlight-badge">ANNUAL HOSTEL MASTERCHEF CONTEST</span>
+            <p>Hostel common room mein MasterChef challenge shuru ho chuka hai! Cash prize ₹1,500 hai. Saamne 2 tagdi competitor teams hain:</p>
+            <div class="rival-card">🔴 <strong>Team Alpha:</strong> Authentic Kashmiri Rogan Josh & Saffron Rice bana rahi hai.</div>
+            <div class="rival-card">🔵 <strong>Team Spice:</strong> Authentic South Indian Masala Dosa with 3 dips bana rahi hai.</div>
+            <p style="margin-top:8px;">Aap aur aapka partner kitchen counter par aate hain!</p>
+          `;
+          opts.innerHTML = `
+            <button class="btn action-btn" onclick="gameState='chef_cook'; renderScreen();">Counter Sambhalo & Cooking Shuru Karo!</button>
+          `;
+          break;
+
+        case "chef_cook":
+          box.innerHTML = `
+            <span class="highlight-badge" style="background:#fee2e2; color:#dc2626;">KITCHEN CRISIS!</span>
+            <p>Aapne Shahi Paneer gravy chadhayi thi, par aakhri moment par stove ki aanch tez ho gayi aur gravy jal kar smoky ho gayi! Paneer bhi adha toot gaya.</p>
+            <p style="margin-top:6px;">Judges round review ke liye aane wale hain! Ab kya jugaad karein?</p>
+          `;
+          opts.innerHTML = `
+            <button class="btn" onclick="chefOutcome('fusion')">💡 Master Desi Jugaad: Roasted Masala + Crumbled Paneer bhurji style bana kar 'Smoky Charred Paneer Lababdar' bolkar serve karo!</button>
+            <button class="btn" onclick="chefOutcome('mask')">Sugar aur extra paani daal kar jala hua taste dabane ki koshish karo (-₹100 supplies)</button>
+            <button class="btn" onclick="chefOutcome('giveup')">Haar maan kar dish disqualify hone do (0 Effort)</button>
+          `;
+          break;
+
+        case "chef_result_win":
+          box.innerHTML = `
+            <span class="highlight-badge" style="background:#dcfce7; color:#15803d;">🏆 VICTORY: YOU ARE THE WINNER!</span>
+            <p>Judges ne jab smoky fusion taste kiya toh shock ho gaye! <em>"Yeh rustic charred smoky flavor toh 5-star innovations jaisa hai!"</em></p>
+            <p style="margin-top:6px;">Team Alpha aur Team Spice dekhte reh gaye aur aapne ₹1,500 Cash Prize + Trophy jeet li!</p>
+          `;
+          opts.innerHTML = `<button class="btn action-btn" onclick="gameState='scenario_exam'; renderScreen();">Agle Semester Challenge par Chalein ➡️</button>`;
+          break;
+
+        case "chef_result_loss":
+          box.innerHTML = `
+            <span class="highlight-badge" style="background:#fee2e2; color:#dc2626;">DISQUALIFIED / LOSS</span>
+            <p>Judges ko taste bilkul pasand nahi aaya. Team Alpha winner bani. Aapko kitchen safai ka fine dena pada (-₹200, -10% Health).</p>
+          `;
+          opts.innerHTML = `<button class="btn action-btn" onclick="gameState='scenario_exam'; renderScreen();">Agle Challenge par Chalein ➡️</button>`;
+          break;
+
+        case "scenario_exam":
+          box.innerHTML = `<strong>Mid-Term Final Sprint:</strong> Semester end exams sar par hain. Revision plan choose kijiye:`;
+          opts.innerHTML = `
+            <button class="btn" onclick="applyChoice(-1000, 0, 0.3, 'final_eval')">Expensive Crash Course + Readymade Solved Papers (-₹1,000, +0.3 GPA)</button>
+            <button class="btn" onclick="applyChoice(0, -20, 0.2, 'final_eval')">3 Raat Jag kar Khud Notes Compiling (-20% Health, +0.2 GPA)</button>
+            <button class="btn" onclick="applyChoice(-150, -5, 0.15, 'final_eval')">Study Circle + Library Group Discussion (-₹150 Snacks, -5% Health, +0.15 GPA)</button>
+          `;
+          break;
+
+        case "final_eval":
+          showDynamicEnding(box, opts);
+          break;
+      }
     }
 
-    function playChefMinigame() {
-        const success = Math.random() > 0.5; // 50% chance of winning
-        const resDiv = document.getElementById('minigame-result');
-        if(success) {
-            wallet += 500;
-            health += 10;
-            resDiv.innerHTML = "🌟 Delicious! You won ₹500 and feel great (+10% Health)!";
-            resDiv.style.color = "#10b981";
-        } else {
-            health -= 15;
-            resDiv.innerHTML = "🔥 Oh no! You burnt the food. (-15% Health)";
-            resDiv.style.color = "#dc2626";
-        }
-        updateUI();
-        finishChefMinigame();
+    function applyChoice(dW, dH, dG, nextState) {
+      wallet += dW;
+      health = Math.max(0, Math.min(100, health + dH));
+      gpa = Math.max(0, Math.min(4.0, gpa + dG));
+      gameState = nextState;
+      updateUI();
+      renderScreen();
     }
 
-    function skipChefMinigame() {
-        document.getElementById('minigame-result').innerHTML = "You skipped the challenge.";
-        document.getElementById('minigame-result').style.color = "#64748b";
-        finishChefMinigame();
+    function chefOutcome(type) {
+      if(type === 'fusion') {
+        wallet += 1500;
+        health = Math.min(100, health + 15);
+        gameState = 'chef_result_win';
+      } else if(type === 'mask') {
+        wallet -= 300;
+        health -= 10;
+        gameState = 'chef_result_loss';
+      } else {
+        health -= 10;
+        gameState = 'chef_result_loss';
+      }
+      updateUI();
+      renderScreen();
     }
 
-    function finishChefMinigame() {
-        chefEventTriggered = true;
-        setTimeout(() => {
-            document.getElementById('chef-challenge-box').style.display = 'none';
-            document.getElementById('options-container').style.display = 'flex';
-            renderScenario(); // continue normal game
-        }, 2000);
+    function showDynamicEnding(box, opts) {
+      let badge = "";
+      let title = "";
+      let desc = "";
+
+      if (wallet < 1500 && gpa >= 3.6) {
+        badge = `<span class="highlight-badge" style="background:#fef3c7; color:#b45309;">ENDING: THE BROKE SCHOLAR</span>`;
+        title = "Top Marks, Empty Pockets! 📚💸";
+        desc = `Aapne GPA toh shandaar (${gpa.toFixed(2)}) bana liya, par wallet mein sirf ₹${wallet} bache. Semester ke end mein dosto se udhaar mangna pad raha hai!`;
+      } else if (wallet > 3000 && gpa < 3.4) {
+        badge = `<span class="highlight-badge" style="background:#fef3c7; color:#b45309;">ENDING: THE RICH SLACKER</span>`;
+        title = "Paisa Hi Paisa, Par Marks Gayab! 💰📉";
+        desc = `Wallet balance toh badhiya bacha liya (₹${wallet}), par padhai par dhyan na dene se GPA gir kar ${gpa.toFixed(2)} ho gaya. Remedial classes leni padengi!`;
+      } else if (wallet >= 2500 && gpa >= 3.6 && health >= 65) {
+        badge = `<span class="highlight-badge" style="background:#dcfce7; color:#15803d;">PERFECT ENDING: CAMPUS LEGEND</span>`;
+        title = "All-Rounder Mastermind! 🏆🌟";
+        desc = `Kamaal kar diya! Health (${health}%), GPA (${gpa.toFixed(2)}), aur Wallet (₹${wallet}) teeno perfect balance mein hain. Upar se MasterChef jugad ka kissa poore hostel mein famous ho gaya!`;
+      } else {
+        badge = `<span class="highlight-badge">ENDING: THE SURVIVOR</span>`;
+        title = "Semester Pushed Through! 🎓";
+        desc = `Jaise-taise balance banakar aapne semester nikal liya. Final Wallet: ₹${wallet} | GPA: ${gpa.toFixed(2)} | Health: ${health}%. Agle semester thodi aur planning lagegi!`;
+      }
+
+      box.innerHTML = `${badge}<h3 style="margin: 8px 0;">${title}</h3><p>${desc}</p>`;
+      opts.innerHTML = `<button class="btn action-btn" onclick="restart()">Play Again With Different Choices</button>`;
     }
 
-    function resetGame() {
+    function restart() {
       health = 80;
       gpa = 3.5;
       wallet = 5000;
-      currentStep = 0;
-      chefEventTriggered = false;
-      document.getElementById('chef-challenge-box').style.display = 'none';
-      document.getElementById('options-container').style.display = 'flex';
-      document.getElementById('minigame-result').innerHTML = '';
+      gameState = "scenario_1";
       updateUI();
-      renderScenario();
+      renderScreen();
     }
 
     updateUI();
-    renderScenario();
+    renderScreen();
   </script>
 </body>
 </html>
-
