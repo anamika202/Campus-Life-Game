@@ -7,7 +7,7 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { background: #f0f4f8; color: #1e293b; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-    .game-card { background: white; width: 100%; max-width: 600px; border-radius: 16px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+    .game-card { background: white; width: 100%; max-width: 620px; border-radius: 16px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
     h1 { font-size: 1.4rem; text-align: center; color: #0f172a; margin-bottom: 18px; }
     
     .metrics { display: flex; justify-content: space-between; background: #e2e8f0; padding: 12px 18px; border-radius: 12px; margin-bottom: 16px; }
@@ -20,16 +20,16 @@
     .progress-bar-container { background: #e2e8f0; border-radius: 8px; height: 10px; width: 100%; margin-top: 8px; overflow: hidden; }
     .progress-bar { background: #10b981; height: 100%; width: 100%; transition: width 0.3s ease, background 0.3s ease; }
     
-    .content-box { background: #f8fafc; border-left: 4px solid #3b82f6; padding: 16px; border-radius: 8px; margin-bottom: 18px; line-height: 1.5; font-size: 1rem; }
+    .content-box { background: #f8fafc; border-left: 4px solid #3b82f6; padding: 16px; border-radius: 8px; margin-bottom: 18px; line-height: 1.5; font-size: 0.98rem; }
     .highlight-badge { display: inline-block; background: #fef3c7; color: #b45309; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; margin-bottom: 8px; }
     
     .options-grid { display: flex; flex-direction: column; gap: 10px; }
-    .btn { background: white; border: 1.5px solid #cbd5e1; padding: 12px 14px; border-radius: 8px; cursor: pointer; text-align: left; font-size: 0.95rem; font-weight: 500; transition: all 0.2s; color: #1e293b; }
+    .btn { background: white; border: 1.5px solid #cbd5e1; padding: 12px 14px; border-radius: 8px; cursor: pointer; text-align: left; font-size: 0.92rem; font-weight: 500; transition: all 0.2s; color: #1e293b; }
     .btn:hover { border-color: #3b82f6; background: #eff6ff; }
     .action-btn { background: #3b82f6; color: white; border: none; font-weight: bold; text-align: center; }
     .action-btn:hover { background: #2563eb; }
 
-    .rival-card { background: white; border: 1px solid #e2e8f0; padding: 10px; border-radius: 8px; margin: 8px 0; font-size: 0.9rem; }
+    .rival-card { background: white; border: 1px solid #e2e8f0; padding: 10px; border-radius: 8px; margin: 8px 0; font-size: 0.88rem; }
   </style>
 </head>
 <body>
@@ -44,7 +44,7 @@
       </div>
       <div class="stat">
         <div class="stat-label">GPA</div>
-        <div class="stat-value" id="gpa-val">3.50</div>
+        <div class="stat-value" id="gpa-val">3.40</div>
       </div>
       <div class="stat">
         <div class="stat-label">Wallet</div>
@@ -63,19 +63,20 @@
     </div>
 
     <div class="content-box" id="main-content">
-      <!-- Dynamic Story Screen -->
+      <!-- Content Dynamic -->
     </div>
 
     <div class="options-grid" id="options-container">
-      <!-- Dynamic Buttons -->
+      <!-- Options Dynamic -->
     </div>
   </div>
 
   <script>
     let health = 80;
-    let gpa = 3.5;
+    let gpa = 3.4;
     let wallet = 5000;
     const initialWallet = 5000;
+    let recklessChoicesCount = 0;
     let gameState = "scenario_1";
 
     function updateUI() {
@@ -88,17 +89,17 @@
       pBar.style.width = pct + '%';
 
       const statusEl = document.getElementById('budget-status');
-      if (pct > 60) {
+      if (pct > 55) {
         pBar.style.background = '#10b981';
         statusEl.textContent = 'Healthy';
         statusEl.style.color = '#059669';
       } else if (pct > 25) {
         pBar.style.background = '#f59e0b';
-        statusEl.textContent = 'Budget Squeezed!';
+        statusEl.textContent = 'Budget Danger!';
         statusEl.style.color = '#d97706';
       } else {
         pBar.style.background = '#ef4444';
-        statusEl.textContent = 'Bankruptcy Danger!';
+        statusEl.textContent = 'Critical Debt Zone!';
         statusEl.style.color = '#dc2626';
       }
     }
@@ -109,32 +110,32 @@
       opts.innerHTML = '';
 
       if (wallet <= 0) {
-        box.innerHTML = `<span class="highlight-badge" style="background:#fee2e2; color:#b91c1c;">GAME OVER: BANKRUPT</span>
-        <p>Aapka wallet bilkul khali ho gaya (₹0)! Udhaar lene ki naubat aa gayi aur campus survival khatam ho gaya.</p>`;
+        box.innerHTML = `<span class="highlight-badge" style="background:#fee2e2; color:#b91c1c;">GAME OVER: BROKE & DEBT</span>
+        <p>Aapka wallet bilkul khali ho gaya (₹0)! Bina budget soche reckless kharche karne ki wajah se semester ke beech mein hi dosto ke aage haath phailana pada!</p>`;
         opts.innerHTML = `<button class="btn action-btn" onclick="restart()">Try Again</button>`;
         return;
       }
-      if (health <= 20) {
+      if (health <= 25) {
         box.innerHTML = `<span class="highlight-badge" style="background:#fee2e2; color:#b91c1c;">HOSPITALIZED</span>
-        <p>Extreme burnout aur laparwahi se health 20% se neeche gir gayi. Semester drop karna pada!</p>`;
+        <p>Severe burnout & poor nutrition! Health 25% se neeche gir gayi aur semester hospital mein beeta!</p>`;
         opts.innerHTML = `<button class="btn action-btn" onclick="restart()">Try Again</button>`;
         return;
       }
 
       switch(gameState) {
         case "scenario_1":
-          box.innerHTML = `<strong>Friday Night Dilemma:</strong> Exams 10 din door hain, par dosto ka group expensive cafe dinner ke liye insist kar raha hai.`;
+          box.innerHTML = `<strong>Weekend Chill vs Reality:</strong> Exams 10 din door hain, par dosto ka group luxury club & rooftop cafe mein weekend blast plan kar raha hai.`;
           opts.innerHTML = `
-            <button class="btn" onclick="applyChoice(-1500, 5, 0, 'chef_intro')">Expensive Cafe Dinner & Partying (-₹1,500, +5% Health)</button>
-            <button class="btn" onclick="applyChoice(-200, 5, 0.05, 'chef_intro')">Campus Canteen Chai-Samosa & Group Study (-₹200, +5% Health, +0.05 GPA)</button>
-            <button class="btn" onclick="applyChoice(0, -5, 0.1, 'chef_intro')">Hostel Mess Dinner & 2 Hours Focus Study (₹0, -5% Health, +0.1 GPA)</button>
+            <button class="btn" onclick="recklessChoicesCount++; applyChoice(-2400, 5, -0.2, 'chef_intro')">🎉 Full Night Rooftop Party & Expensive Drinks (-₹2,400, -0.20 GPA, +5% Health)</button>
+            <button class="btn" onclick="applyChoice(-250, 5, 0.05, 'chef_intro')">☕ Campus Canteen Chai & Group Revision (-₹250, +5% Health, +0.05 GPA)</button>
+            <button class="btn" onclick="applyChoice(0, -5, 0.15, 'chef_intro')">📖 Hostel Mess & Late Night Solo Revision (₹0, -5% Health, +0.15 GPA)</button>
           `;
           break;
 
         case "chef_intro":
           box.innerHTML = `
             <span class="highlight-badge">ANNUAL HOSTEL MASTERCHEF CONTEST</span>
-            <p>Hostel common room mein MasterChef challenge shuru ho chuka hai! Cash prize ₹1,500 hai. Saamne 2 tagdi competitor teams hain:</p>
+            <p>Hostel common room mein MasterChef challenge shuru ho chuka hai! Trophy + ₹600 cash prize hai. Saamne 2 tagdi rival teams hain:</p>
             <div class="rival-card">🔴 <strong>Team Alpha:</strong> Authentic Kashmiri Rogan Josh & Saffron Rice bana rahi hai.</div>
             <div class="rival-card">🔵 <strong>Team Spice:</strong> Authentic South Indian Masala Dosa with 3 dips bana rahi hai.</div>
             <p style="margin-top:8px;">Aap aur aapka partner kitchen counter par aate hain!</p>
@@ -151,8 +152,8 @@
             <p style="margin-top:6px;">Judges round review ke liye aane wale hain! Ab kya jugaad karein?</p>
           `;
           opts.innerHTML = `
-            <button class="btn" onclick="chefOutcome('fusion')">💡 Master Desi Jugaad: Roasted Masala + Crumbled Paneer bhurji style bana kar 'Smoky Charred Paneer Lababdar' bolkar serve karo!</button>
-            <button class="btn" onclick="chefOutcome('mask')">Sugar aur extra paani daal kar jala hua taste dabane ki koshish karo (-₹100 supplies)</button>
+            <button class="btn" onclick="chefOutcome('fusion')">💡 Master Desi Jugaad: Roasted Masala + Crumbled Paneer mix karke 'Smoky Charred Paneer Lababdar' bolkar serve karo!</button>
+            <button class="btn" onclick="chefOutcome('mask')">Sugar aur extra paani daal kar jala hua taste dabane ki koshish karo (-₹150 supplies)</button>
             <button class="btn" onclick="chefOutcome('giveup')">Haar maan kar dish disqualify hone do (0 Effort)</button>
           `;
           break;
@@ -161,25 +162,34 @@
           box.innerHTML = `
             <span class="highlight-badge" style="background:#dcfce7; color:#15803d;">🏆 VICTORY: YOU ARE THE WINNER!</span>
             <p>Judges ne jab smoky fusion taste kiya toh shock ho gaye! <em>"Yeh rustic charred smoky flavor toh 5-star innovations jaisa hai!"</em></p>
-            <p style="margin-top:6px;">Team Alpha aur Team Spice dekhte reh gaye aur aapne ₹1,500 Cash Prize + Trophy jeet li!</p>
+            <p style="margin-top:6px;">Team Alpha aur Team Spice dekhte reh gaye aur aapne ₹600 Cash Prize + Trophy jeet li!</p>
           `;
-          opts.innerHTML = `<button class="btn action-btn" onclick="gameState='scenario_exam'; renderScreen();">Agle Semester Challenge par Chalein ➡️</button>`;
+          opts.innerHTML = `<button class="btn action-btn" onclick="gameState='scenario_splurge'; renderScreen();">Agle Week par Chalein ➡️</button>`;
           break;
 
         case "chef_result_loss":
           box.innerHTML = `
             <span class="highlight-badge" style="background:#fee2e2; color:#dc2626;">DISQUALIFIED / LOSS</span>
-            <p>Judges ko taste bilkul pasand nahi aaya. Team Alpha winner bani. Aapko kitchen safai ka fine dena pada (-₹200, -10% Health).</p>
+            <p>Judges ko taste bilkul pasand nahi aaya. Team Alpha winner bani. Aapko kitchen safai ka fine dena pada (-₹300, -10% Health).</p>
           `;
-          opts.innerHTML = `<button class="btn action-btn" onclick="gameState='scenario_exam'; renderScreen();">Agle Challenge par Chalein ➡️</button>`;
+          opts.innerHTML = `<button class="btn action-btn" onclick="gameState='scenario_splurge'; renderScreen();">Agle Week par Chalein ➡️</button>`;
+          break;
+
+        case "scenario_splurge":
+          box.innerHTML = `<strong>Mid-Semester Impulsive Spending:</strong> E-commerce mega sale aayi hai aur naye sneakers/gadgets par discount chal raha hai. Saath hi semester project submit karna hai!`;
+          opts.innerHTML = `
+            <button class="btn" onclick="recklessChoicesCount++; applyChoice(-2000, 10, -0.2, 'scenario_exam')">👟 Sale mein Fancy Sneakers & Gadget order kar do (-₹2,000, +10% Health, -0.2 GPA)</button>
+            <button class="btn" onclick="applyChoice(-400, 5, 0.05, 'scenario_exam')">☕ Bas thode stationery aur coffee supplies lo (-₹400, +5% Health, +0.05 GPA)</button>
+            <button class="btn" onclick="applyChoice(0, -5, 0.1, 'scenario_exam')">🚫 Sale ignore karo aur lab project par dhyan do (₹0, -5% Health, +0.1 GPA)</button>
+          `;
           break;
 
         case "scenario_exam":
-          box.innerHTML = `<strong>Mid-Term Final Sprint:</strong> Semester end exams sar par hain. Revision plan choose kijiye:`;
+          box.innerHTML = `<strong>Final Exam Revision Crunch:</strong> 3 din bache hain aur syllabus adha bacha hua hai!`;
           opts.innerHTML = `
-            <button class="btn" onclick="applyChoice(-1000, 0, 0.3, 'final_eval')">Expensive Crash Course + Readymade Solved Papers (-₹1,000, +0.3 GPA)</button>
-            <button class="btn" onclick="applyChoice(0, -20, 0.2, 'final_eval')">3 Raat Jag kar Khud Notes Compiling (-20% Health, +0.2 GPA)</button>
-            <button class="btn" onclick="applyChoice(-150, -5, 0.15, 'final_eval')">Study Circle + Library Group Discussion (-₹150 Snacks, -5% Health, +0.15 GPA)</button>
+            <button class="btn" onclick="recklessChoicesCount++; applyChoice(-1500, 0, 0.1, 'final_eval')">💸 Readymade Assignment/Notes khareed kar shortcut lo (-₹1,500, +0.1 GPA)</button>
+            <button class="btn" onclick="applyChoice(0, -20, 0.25, 'final_eval')">☕ All-nighter maar kar khud comprehensive padhai karo (-20% Health, +0.25 GPA)</button>
+            <button class="btn" onclick="applyChoice(-150, -5, 0.15, 'final_eval')">👥 Study group discussion aur library notes (-₹150, -5% Health, +0.15 GPA)</button>
           `;
           break;
 
@@ -200,8 +210,8 @@
 
     function chefOutcome(type) {
       if(type === 'fusion') {
-        wallet += 1500;
-        health = Math.min(100, health + 15);
+        wallet += 600;
+        health = Math.min(100, health + 10);
         gameState = 'chef_result_win';
       } else if(type === 'mask') {
         wallet -= 300;
@@ -220,22 +230,27 @@
       let title = "";
       let desc = "";
 
-      if (wallet < 1500 && gpa >= 3.6) {
-        badge = `<span class="highlight-badge" style="background:#fef3c7; color:#b45309;">ENDING: THE BROKE SCHOLAR</span>`;
-        title = "Top Marks, Empty Pockets! 📚💸";
-        desc = `Aapne GPA toh shandaar (${gpa.toFixed(2)}) bana liya, par wallet mein sirf ₹${wallet} bache. Semester ke end mein dosto se udhaar mangna pad raha hai!`;
-      } else if (wallet > 3000 && gpa < 3.4) {
-        badge = `<span class="highlight-badge" style="background:#fef3c7; color:#b45309;">ENDING: THE RICH SLACKER</span>`;
-        title = "Paisa Hi Paisa, Par Marks Gayab! 💰📉";
-        desc = `Wallet balance toh badhiya bacha liya (₹${wallet}), par padhai par dhyan na dene se GPA gir kar ${gpa.toFixed(2)} ho gaya. Remedial classes leni padengi!`;
-      } else if (wallet >= 2500 && gpa >= 3.6 && health >= 65) {
+      // Strict dynamic evaluation
+      if (recklessChoicesCount >= 2 || wallet < 1200) {
+        badge = `<span class="highlight-badge" style="background:#fee2e2; color:#b91c1c;">DISASTER ENDING: BROKE PARTY ANIMAL</span>`;
+        title = "Paisa Khatam, Future Danger! 💸📉";
+        desc = `Aapne pure semester reckless spending ki! Wallet mein bache sirf ₹${wallet} aur padhai drop ho kar GPA ${gpa.toFixed(2)} par aa gaya. Ab agle semester mess fee bharne ke bhi lale pad gaye!`;
+      } else if (gpa < 3.3) {
+        badge = `<span class="highlight-badge" style="background:#fef3c7; color:#b45309;">ENDING: ACADEMIC PROBATION</span>`;
+        title = "Marks Gire, Warning Mili! ⚠️";
+        desc = `Paise toh kisi tarah bachaye (₹${wallet}), par padhai ignore karne ki wajah se GPA gir kar ${gpa.toFixed(2)} reh gaya. College administration se warning letter aa gaya!`;
+      } else if (health < 50) {
+        badge = `<span class="highlight-badge" style="background:#fef3c7; color:#b45309;">ENDING: BURNT OUT SCHOLAR</span>`;
+        title = "Padhai Toh Hui, Par Tabiyat Kharab! 🤒";
+        desc = `GPA toh ${gpa.toFixed(2)} aa gaya, par bina soye jagte rehne se Health sirf ${health}% bachi. Pure vacation doctor ke chakkar kaatne padenge!`;
+      } else if (wallet >= 2200 && gpa >= 3.6 && health >= 65 && recklessChoicesCount === 0) {
         badge = `<span class="highlight-badge" style="background:#dcfce7; color:#15803d;">PERFECT ENDING: CAMPUS LEGEND</span>`;
         title = "All-Rounder Mastermind! 🏆🌟";
-        desc = `Kamaal kar diya! Health (${health}%), GPA (${gpa.toFixed(2)}), aur Wallet (₹${wallet}) teeno perfect balance mein hain. Upar se MasterChef jugad ka kissa poore hostel mein famous ho gaya!`;
+        desc = `Incredible discipline! Health (${health}%), GPA (${gpa.toFixed(2)}), aur Wallet (₹${wallet}) teeno shandaar balance mein hain. Plus MasterChef ke signature smoky paneer ka charma poore hostel mein chha gaya!`;
       } else {
-        badge = `<span class="highlight-badge">ENDING: THE SURVIVOR</span>`;
-        title = "Semester Pushed Through! 🎓";
-        desc = `Jaise-taise balance banakar aapne semester nikal liya. Final Wallet: ₹${wallet} | GPA: ${gpa.toFixed(2)} | Health: ${health}%. Agle semester thodi aur planning lagegi!`;
+        badge = `<span class="highlight-badge">ENDING: THE RESILIENT SURVIVOR</span>`;
+        title = "Average Survival! 🎓";
+        desc = `Aapne na jyada kharcha kiya na extra topper bane. Semester safely cross ho gaya. Final Wallet: ₹${wallet} | GPA: ${gpa.toFixed(2)} | Health: ${health}%.`;
       }
 
       box.innerHTML = `${badge}<h3 style="margin: 8px 0;">${title}</h3><p>${desc}</p>`;
@@ -244,8 +259,9 @@
 
     function restart() {
       health = 80;
-      gpa = 3.5;
+      gpa = 3.4;
       wallet = 5000;
+      recklessChoicesCount = 0;
       gameState = "scenario_1";
       updateUI();
       renderScreen();
